@@ -17,11 +17,13 @@ function App() {
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
     <li class="nav-item">
-        <Link class="nav-link" to='/'>Todos</Link>
+        <Link class="nav-link" to='/todos'>Todos</Link>
       </li>
       <li class="nav-item">
         <Link class="nav-link" to="/add">Create Todo</Link>
       </li>
+
+      
      
     </ul>
     
@@ -29,9 +31,9 @@ function App() {
 </nav>
 
 
-<Route path='/' exact component = {TodoList}/>
+<Route path='/todos' exact component = {TodoList}/>
 <Route path = '/add' exact component = {CreateTodo}/>
-
+<Route path ='/edit/:id' exact component = {EditTodo}/>
 
     </Router>
     

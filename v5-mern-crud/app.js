@@ -35,13 +35,13 @@ app.post('/add', (req, res) => {
 
 //GET ALL TODOS
 app.get('/todos', (req, res) => {
-      Todo.find({}, (err, todos) => {
-        if(err){
-          console.log(err)
-        }else {
-          res.json(todos)
-        }
-      })
+  Todo.find(function(err, todos) {
+    if (err) {
+        console.log(err);
+    } else {
+        res.json(todos);
+    }
+});
 });
 
 
@@ -59,28 +59,41 @@ app.get('/todos/:id', (req, res) => {
 
 //UPDATE
 app.post('/todos/update/:id', (req, res) => {
-  Todo.findById(req.params.id, (err, foundTodo) => {
-   if(!foundTodo){
-     res.status(404).send('Data is not found')
-   }else {
-    //The found todo has it properties from the database and replacing the one coming fro the form
+  Todo.findById(req.params.id, function(err, todo) {
+    if (!todo)
+        res.status(404).send('data is not found');
+    else
+        todo.todo_description = req.body.todo_description;
+        todo.todo_responsible = req.body.todo_responsible;
+        todo.todo_priority = req.body.todo_priority;
+        todo.todo_completed = req.body.todo_completed;
 
-    foundTodo.todo_description = req.body.description;
-    todofoundTodo.todo_responsible = req.body.responsible;
-    todofoundTodo.todo_priority = req.body.priority;
-    todofoundTodo.todo_completed = req.body.completed
-
-   }
-
-   foundTodo.save()
-   .then((updateTodo) => {
-    res.status(400).send('Todo is updated')
-   }).catch((err) => {
-     console.log(err);
-   })
-     
-  })
+        todo.save().then(todo => {
+            res.json('Todo updated');
+        })
+        .catch(err => {
+            res.status(400).send("Update not possible");
+        });
+});
 })
+
+
+// app.dele('/todos/:id', (req, res) => {
+//   Todo.findByIdAndRemove({_id: req.params.id}, function(err, business){
+//     if(err) res.json(err);
+//     else res.json('Successfully removed');
+// });
+// });
+
+app.delete("/todos/:id", function(req, res){
+  Todo.findByIdAndRemove(req.params.id, function(err){
+  if(err){
+      res.send(err);
+  } else {
+      res.send('deleted');
+  }
+  });
+});
 
 app.get('/', (req, res) => {
  res.send('APP')
