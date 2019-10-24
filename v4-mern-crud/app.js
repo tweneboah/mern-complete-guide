@@ -30,6 +30,7 @@ app.post('/add', (req, res) => {
 });
 
 
+
 //GET ALL TODOS
 app.get('/', (req, res) => {
    Todo.find({}, (err, todo) => {
